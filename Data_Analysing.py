@@ -1,5 +1,6 @@
 from pathlib import Path
 from functions import *
+import json
 import matplotlib.pyplot as plt
 
 #读取分行
@@ -78,7 +79,7 @@ for i in list:
         if i['id'] in id_A and i['id'] in id_B:
             id_list.append(i['id'])
             count += 1
-
+p = count/time
 print(f'系统平均吞吐量为{count/time}')
 
 sum = 0
@@ -88,6 +89,7 @@ for i in list:
         if i['id'] == j['id'] and 'Astart' in i.keys() and 'Bend' in j.keys():
             sum += j['Bend'] - i['Astart']
             count += 1
+average_time = sum/count
 print(f'平均帧延迟为{sum/count}')
 
 
@@ -138,3 +140,18 @@ ax.legend()
 plt.xticks(rotation=45)
 plt.tight_layout()
 plt.show()
+
+#保存结果
+result1 = {'ProcessA的平均耗时':calculate_average_time(Alist),
+           'ProcessB的平均耗时':calculate_average_time(Blist),
+           'ProcessA的P99耗时':m,
+           'ProcessA的P90耗时':n,
+           'ProcessB的P99耗时':x,
+           'ProcessB的P99耗时':y
+}
+result2 = {'系统平均吞吐量':p}
+result3 = {'平均帧延迟':average_time}
+result = [result1, result2, result3]
+result = json.dumps(result)
+result_path = Path('result.json')
+result_path.write_text(result)
