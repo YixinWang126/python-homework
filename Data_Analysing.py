@@ -152,6 +152,6 @@ result1 = {'ProcessA的平均耗时':calculate_average_time(Alist),
 result2 = {'系统平均吞吐量':p}
 result3 = {'平均帧延迟':average_time}
 result = [result1, result2, result3]
-result = json.dumps(result)
+result = json.dumps(result, indent=2)
 result_path = Path('result.json')
 result_path.write_text(result)
